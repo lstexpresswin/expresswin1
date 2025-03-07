@@ -45,18 +45,21 @@ const AppLogin = () => {
       setLoading(false);
       // Set login flag and user data
       localStorage.setItem("userLoggedIn", "true");
-      localStorage.setItem("userProfile", JSON.stringify({
-        name: "محمد أحمد",
-        phone: phoneNumber,
-        address: "شارع الحسن الثاني، الدار البيضاء",
-        pin: pin
-      }));
-      
+      localStorage.setItem(
+        "userProfile",
+        JSON.stringify({
+          name: "محمد أحمد",
+          phone: phoneNumber,
+          address: "شارع الحسن الثاني، الدار البيضاء",
+          pin: pin,
+        }),
+      );
+
       toast({
         title: "تم تسجيل الدخول بنجاح",
         description: "مرحباً بك في تطبيق الطلبات",
       });
-      
+
       navigate("/home");
     }, 1000);
   };
@@ -69,7 +72,10 @@ const AppLogin = () => {
 
     const message = `مرحباً،\n\nأرغب في إنشاء حساب جديد في تطبيقكم.\n\nرقم الهاتف: ${phoneNumber}\n\nشكراً لكم.`;
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${import.meta.env.VITE_APP_WHATSAPP_NUMBER || "+212600000000"}?text=${encodedMessage}`, "_blank");
+    window.open(
+      `https://wa.me/${import.meta.env.VITE_APP_WHATSAPP_NUMBER || "+212600000000"}?text=${encodedMessage}`,
+      "_blank",
+    );
   };
 
   const handleForgotPin = () => {
@@ -80,7 +86,10 @@ const AppLogin = () => {
 
     const message = `مرحباً،\n\nلقد نسيت رمز PIN الخاص بي.\n\nرقم الهاتف: ${phoneNumber}\n\nأرجو مساعدتي في استعادة الوصول إلى حسابي.\n\nشكراً لكم.`;
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${import.meta.env.VITE_APP_WHATSAPP_NUMBER || "+212600000000"}?text=${encodedMessage}`, "_blank");
+    window.open(
+      `https://wa.me/${import.meta.env.VITE_APP_WHATSAPP_NUMBER || "+212600000000"}?text=${encodedMessage}`,
+      "_blank",
+    );
   };
 
   return (
@@ -163,4 +172,18 @@ const AppLogin = () => {
               <Button
                 type="button"
                 variant="link"
-                className="
+                className="text-sm"
+                onClick={handleRequestAccount}
+              >
+                <Send className="h-4 w-4 ml-1" />
+                طلب إنشاء حساب
+              </Button>
+            </div>
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
+  );
+};
+
+export default AppLogin;
