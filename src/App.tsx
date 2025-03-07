@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { useRoutes, Routes, Route } from "react-router-dom";
+import { useRoutes, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./components/home";
 import routes from "tempo-routes";
 import LoyaltyPage from "./pages/LoyaltyPage";
@@ -18,20 +18,46 @@ import MenuManagement from "./pages/admin/MenuManagement";
 import UserManagement from "./pages/admin/UserManagement";
 import FinancialManagement from "./pages/admin/FinancialManagement";
 import POSSystem from "./pages/admin/POSSystem";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
+  // Check if user is logged in
+  const isUserLoggedIn = localStorage.getItem("userLoggedIn") === "true";
+  const isAdminLoggedIn = sessionStorage.getItem("adminLoggedIn") === "true";
+
   return (
-    <Suspense fallback={<p>Loading...</p>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          جاري التحميل...
+        </div>
+      }
+    >
       {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
       <Routes>
-        <Route path="/" element={<AppLogin />} />
+        <Route
+          path="/"
+          element={
+            isUserLoggedIn ? <Navigate to="/home" replace /> : <AppLogin />
+          }
+        />
         <Route path="/home" element={<Home />} />
         <Route path="/loyalty" element={<LoyaltyPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<UserLogin />} />
+        <Route
+          path="/admin"
+          element={
+            isAdminLoggedIn ? (
+              <Navigate to="/admin/dashboard" replace />
+            ) : (
+              <UserLogin />
+            )
+          }
+        />
+        <Route path="/admin/login" element={<UserLogin />} />
         <Route path="/admin/dashboard" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="dashboard" element={<AdminDashboard />} />
@@ -47,6 +73,7 @@ function App() {
 
         {import.meta.env.VITE_TEMPO === "true" && <Route path="/tempobook/*" />}
       </Routes>
+      <Toaster />
     </Suspense>
   );
 }

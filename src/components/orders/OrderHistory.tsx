@@ -1,14 +1,8 @@
 import React from "react";
-import { Button } from "../ui/button";
-import { Clock, ShoppingBag, RefreshCw } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Eye, RefreshCw, Clock, ShoppingBag } from "lucide-react";
 
 interface OrderItem {
   id: string;
@@ -161,7 +155,6 @@ const OrderHistory = ({
     <Card className="w-full overflow-hidden bg-white shadow-md hover:shadow-lg transition-shadow rtl">
       <CardHeader>
         <CardTitle className="text-xl font-bold">سجل الطلبات</CardTitle>
-        <CardDescription>طلباتك السابقة</CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -214,7 +207,7 @@ const OrderHistory = ({
                     className="flex gap-1"
                     onClick={() => onViewDetails(order.id)}
                   >
-                    <ShoppingBag className="h-4 w-4" />
+                    <Eye className="h-4 w-4" />
                     التفاصيل
                   </Button>
 

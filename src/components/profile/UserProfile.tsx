@@ -19,6 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { useToast } from "../ui/use-toast";
 
 interface UserProfileProps {
   name?: string;
@@ -40,6 +41,7 @@ const UserProfile = ({
   pin = "1234",
   onUpdateProfile = (profile) => console.log("Update profile", profile),
 }: UserProfileProps) => {
+  const { toast } = useToast();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
     name,
@@ -56,6 +58,14 @@ const UserProfile = ({
   const handleSubmit = () => {
     onUpdateProfile(formData);
     setIsEditDialogOpen(false);
+
+    // Save to localStorage for persistence in demo
+    localStorage.setItem("userProfile", JSON.stringify(formData));
+
+    toast({
+      title: "تم الحفظ بنجاح",
+      description: "تم تحديث معلومات الملف الشخصي",
+    });
   };
 
   return (

@@ -5,6 +5,8 @@ import { ShoppingCart, User, Globe, Menu, X } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { cn } from "../../lib/utils";
+import CartDrawer from "../cart/CartDrawer";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   logo?: string;
@@ -20,14 +22,15 @@ interface HeaderProps {
 const Header = ({
   logo = "/vite.svg",
   cartItemCount = 3,
-  onCartClick = () => console.log("Cart clicked"),
-  onProfileClick = () => console.log("Profile clicked"),
-  onLanguageToggle = () => console.log("Language toggled"),
+  onCartClick = () => {},
+  onProfileClick = () => {},
+  onLanguageToggle = () => {},
   userName = "محمد",
   userAvatar = "",
   isRTL = true,
 }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <header
@@ -38,10 +41,13 @@ const Header = ({
     >
       <div className="container mx-auto h-full px-4 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => navigate("/home")}
+        >
           <img src={logo} alt="شعار التطبيق" className="h-10 w-auto" />
           <h1 className="text-xl font-bold text-primary mr-2 ml-2">
-            AGORA EXPRESS
+            {import.meta.env.VITE_APP_RESTAURANT_NAME || "مطعمنا"}
           </h1>
         </div>
 
@@ -70,27 +76,13 @@ const Header = ({
             <span>{userName}</span>
           </Button>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onCartClick}
-            className="relative flex items-center gap-2"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            <span>السلة</span>
-            {cartItemCount > 0 && (
-              <Badge
-                variant="destructive"
-                className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
-              >
-                {cartItemCount}
-              </Badge>
-            )}
-          </Button>
+          <CartDrawer />
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          <CartDrawer />
+
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
@@ -129,17 +121,26 @@ const Header = ({
                   variant="ghost"
                   className="justify-start"
                   onClick={() => {
-                    onCartClick();
+                    navigate("/loyalty");
                     setMobileMenuOpen(false);
                   }}
                 >
-                  <ShoppingCart className="h-4 w-4 mr-2 ml-2" />
-                  <span>السلة</span>
-                  {cartItemCount > 0 && (
-                    <Badge variant="destructive" className="mr-2 ml-2">
-                      {cartItemCount}
-                    </Badge>
-                  )}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="mr-2 ml-2"
+                  >
+                    <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                  <span>برنامج الولاء</span>
                 </Button>
 
                 <Button
